@@ -2,17 +2,16 @@
 
 package guru.sfg.brewery.model;
 
-import java.math.BigDecimal;
-import java.time.OffsetDateTime;
-import java.util.UUID;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -40,4 +39,6 @@ public class BeerOrderLineDto {
     private UUID beerId;
     private Integer orderQuantity = 0;
     private BigDecimal price;
+
+    private Integer quantityAllocated;
 }
