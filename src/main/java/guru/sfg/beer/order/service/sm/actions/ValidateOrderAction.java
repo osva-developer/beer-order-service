@@ -1,5 +1,13 @@
 package guru.sfg.beer.order.service.sm.actions;
 
+import java.util.Optional;
+import java.util.UUID;
+
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.statemachine.StateContext;
+import org.springframework.statemachine.action.Action;
+import org.springframework.stereotype.Component;
+
 import guru.sfg.beer.order.service.config.JmsConfig;
 import guru.sfg.beer.order.service.domain.BeerOrder;
 import guru.sfg.beer.order.service.domain.BeerOrderEventEnum;
@@ -10,13 +18,6 @@ import guru.sfg.beer.order.service.web.mappers.BeerOrderMapper;
 import guru.sfg.brewery.model.events.ValidateOrderRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.statemachine.StateContext;
-import org.springframework.statemachine.action.Action;
-import org.springframework.stereotype.Component;
-
-import java.util.Optional;
-import java.util.UUID;
 
 
 @Slf4j
