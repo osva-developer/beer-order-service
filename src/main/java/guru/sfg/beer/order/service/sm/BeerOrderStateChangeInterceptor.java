@@ -19,6 +19,13 @@ import guru.sfg.beer.order.service.repositories.BeerOrderRepository;
 import guru.sfg.beer.order.service.services.BeerOrderManagerImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+
+/**
+ * 
+ * This class will execute when will be a transition from a state to other to set the status value
+ *
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -28,11 +35,15 @@ public class BeerOrderStateChangeInterceptor extends StateMachineInterceptorAdap
 
     @Transactional
     @Override
-    public void preStateChange(State<BeerOrderStatusEnum, BeerOrderEventEnum> state, Message<BeerOrderEventEnum> message, Transition<BeerOrderStatusEnum, BeerOrderEventEnum> transition, StateMachine<BeerOrderStatusEnum, BeerOrderEventEnum> stateMachine) {
+    public void preStateChange(State<BeerOrderStatusEnum, BeerOrderEventEnum> state, Message<BeerOrderEventEnum> message,
+    		Transition<BeerOrderStatusEnum, BeerOrderEventEnum> transition, StateMachine<BeerOrderStatusEnum,
+    		BeerOrderEventEnum> stateMachine) {
         log.debug("Pre-State Change");
 
         Optional.ofNullable(message)
+        
                 .flatMap(msg -> Optional.ofNullable((String) msg.getHeaders().getOrDefault(BeerOrderManagerImpl.ORDER_ID_HEADER, " ")))
+                
                 .ifPresent(orderId -> {
                     log.debug("Saving state for order id: " + orderId + " Status: " + state.getId());
 
