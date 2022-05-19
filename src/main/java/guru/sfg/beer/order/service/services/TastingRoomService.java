@@ -37,9 +37,8 @@ public class TastingRoomService {
     }
 
     @Transactional
-    @Scheduled(fixedRate = 2000) //run every 2 seconds
+    @Scheduled(fixedRate = 1000) //run every 2 seconds
     public void placeTastingRoomOrder(){
-    	log.info("tasting room");
 
         List<Customer> customerList = customerRepository.findAllByCustomerNameLike(BeerOrderBootStrap.TASTING_ROOM);
 
@@ -70,6 +69,7 @@ public class TastingRoomService {
                 .build();
 
         BeerOrderDto savedOrder = beerOrderService.placeOrder(customer.getId(), beerOrder);
+        log.info("proccess was finish");
 
     }
 

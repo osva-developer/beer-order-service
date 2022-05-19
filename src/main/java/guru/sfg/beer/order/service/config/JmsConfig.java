@@ -1,12 +1,11 @@
 package guru.sfg.beer.order.service.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
 public class JmsConfig {
