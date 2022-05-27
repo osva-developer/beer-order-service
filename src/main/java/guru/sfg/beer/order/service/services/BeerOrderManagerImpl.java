@@ -1,13 +1,11 @@
 package guru.sfg.beer.order.service.services;
 
-import guru.sfg.beer.order.service.domain.BeerOrder;
-import guru.sfg.beer.order.service.domain.BeerOrderEventEnum;
-import guru.sfg.beer.order.service.domain.BeerOrderStatusEnum;
-import guru.sfg.beer.order.service.repositories.BeerOrderRepository;
-import guru.sfg.beer.order.service.sm.BeerOrderStateChangeInterceptor;
-import guru.sfg.brewery.model.BeerOrderDto;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.time.LocalTime;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.statemachine.StateMachine;
@@ -16,10 +14,14 @@ import org.springframework.statemachine.support.DefaultStateMachineContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
+import guru.sfg.beer.order.service.domain.BeerOrder;
+import guru.sfg.beer.order.service.domain.BeerOrderEventEnum;
+import guru.sfg.beer.order.service.domain.BeerOrderStatusEnum;
+import guru.sfg.beer.order.service.repositories.BeerOrderRepository;
+import guru.sfg.beer.order.service.sm.BeerOrderStateChangeInterceptor;
+import guru.sfg.brewery.model.BeerOrderDto;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 
 @Slf4j
@@ -39,7 +41,9 @@ public class BeerOrderManagerImpl implements BeerOrderManager {
         beerOrder.setId(null);
         beerOrder.setOrderStatus(BeerOrderStatusEnum.NEW);
 
-        BeerOrder savedBeerOrder = beerOrderRepository.saveAndFlush(beerOrder);
+        BeerOrder savedBeerOrder = beerOrderRepository.saveAndFlush(beerOrder);//AndFlush
+
+        
         sendBeerOrderEvent(savedBeerOrder, BeerOrderEventEnum.VALIDATE_ORDER);
         return savedBeerOrder;
     }
@@ -56,7 +60,7 @@ public class BeerOrderManagerImpl implements BeerOrderManager {
                 sendBeerOrderEvent(beerOrder, BeerOrderEventEnum.VALIDATION_PASSED);
 
                 //wait for status change
-                awaitForStatus(beerOrderId, BeerOrderStatusEnum.VALIDATED);
+                awaitForStatus(beerOrderId, BeerOrderStatusEnum.VALIDATED);//this is not a event it just to validate change in the database
 
                 BeerOrder validatedOrder = beerOrderRepository.findById(beerOrderId).get();
 
